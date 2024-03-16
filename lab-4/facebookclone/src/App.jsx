@@ -1,35 +1,139 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const month = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  const [registerinfo, setinfo] = useState({
+    FirstName: "",
+    SurName: "",
+    Email: "",
+    PassWord: "",
+    day: 0 || new Date().getDate(),
+    Month: "" || month[new Date().getMonth()],
+    Year: 0 || new Date().getFullYear(),
+    Gender: "",
+  });
+
+  const years = [];
+
+  const getCurrentYear = () => {
+    const currentYear = new Date().getFullYear();
+    for (let i = currentYear; i >= currentYear - 100; i--) {
+      years.push(i);
+    }
+  };
+  getCurrentYear();
+
+  const handleChange = (e) => {
+    setinfo({
+      ...registerinfo,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log(registerinfo);
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <h1>Sign Up</h1>
+      <form onSubmit={handleSubmit}>
+        <label>
+          <input
+            type="text"
+            placeholder="First Name"
+            name="FirstName"
+            onChange={handleChange}
+          />
+        </label>
+        <label>
+          <input
+            type="text"
+            placeholder="Last Name"
+            name="SurName"
+            onChange={handleChange}
+          />
+        </label>
+        <label>
+          <input
+            type="email"
+            placeholder="Email"
+            name="Email"
+            onChange={handleChange}
+          />
+        </label>
+        <label>
+          <input
+            type="password"
+            placeholder="Password"
+            name="PassWord"
+            onChange={handleChange}
+          />
+        </label>
+        <h1>Date of Birth</h1>
+        <label>
+          <select onChange={handleChange} name="day">
+            {Array.from({ length: 31 }, (_, index) => (
+              <option key={index} value={index + 1}>
+                {index + 1}
+              </option>
+            ))}
+          </select>
+          <select onChange={handleChange} name="Month">
+            {month.map((item, index) => (
+              <option key={index} value={item}>
+                {item}
+              </option>
+            ))}
+          </select>
+          <select onChange={handleChange} name="Year">
+            {years.map((item, index) => (
+              <option key={index} value={item}>
+                {item}
+              </option>
+            ))}
+          </select>
+        </label>
+        <div>
+          <h1>Gender</h1>
+          <label>
+            Female
+            <input
+              type="radio"
+              name="Gender"
+              value="Female"
+              onChange={handleChange}
+            />
+          </label>
+          <label>
+            male
+            <input
+              type="radio"
+              name="Gender"
+              value="Male"
+              onChange={handleChange}
+            />
+          </label>
+        </div>
+        <button type="submit">Sign Up</button>
+      </form>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
